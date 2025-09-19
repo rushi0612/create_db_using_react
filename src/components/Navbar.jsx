@@ -38,11 +38,18 @@ const {activeMenu, setActiveMenu, handleClick} = useStateContext();
           icon={<FiShoppingCart/>}
         />
         <NavButton 
-          title= "Chart"
+          title= "Chat"
           dotColor="03c9d7"
-          customFunc={() => handleClick( 'Cart')} 
+          customFunc={() => handleClick( 'Chat')} 
           color="blue" 
           icon={<BsChatLeft/>}
+        />
+        <NavButton 
+          title= "Notifications"
+          dotColor="03c9d7"
+          customFunc={() => handleClick( 'notifications')} 
+          color="blue" 
+          icon={<RiNotification3Line/>}
         />
       </div>
     </div>
