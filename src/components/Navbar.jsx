@@ -9,8 +9,25 @@ import avatar from '../data/avatar.jpg';
 import { Cart, Chat, Notification, UserProfile } from ".";
 import { useStateContext } from "../contexts/ContextProvider";
 const Navbar = () => {
-const {activeMenu, setActiveMenu, handleClick} = useStateContext();
-  
+const {activeMenu, setActiveMenu, handleClick ,isClicked, setIsClicked, screenSize, setScreenSize} = useStateContext();
+
+  useEffect(() => { 
+      const handelResize = () => setScreenSize
+      (window.innerWidth);
+
+      window.addEventListener('resize', handelResize)
+      handelResize();
+      return () => window.removeEventListener ('resize', handelResize)
+  }, []);
+
+  useEffect(() => {
+    if (screenSize <= 900) {
+      setActiveMenu(false);
+    } else {
+      setActiveMenu(true);
+    }
+  }, [screenSize]);
+
   const NavButton= ({ title, customFunc, icon, color, dotColor }) => (
   <TooltipComponent content={title} position="BottomCenter">
     <button type="button" onClick={customFunc} style={{ color}}
@@ -18,9 +35,8 @@ const {activeMenu, setActiveMenu, handleClick} = useStateContext();
     >
       <span style={{background: dotColor}}
       className="absolute inline-flex rounded-full h-2 w-2 right-2 top-2"
-      >
+      />
         {icon}
-      </span>
     </button>
 
   </TooltipComponent>  
@@ -33,21 +49,21 @@ const {activeMenu, setActiveMenu, handleClick} = useStateContext();
       <div className="flex">
         <NavButton 
           title= "Cart" 
-          customFunc={() => handleClick( 'Cart')} 
+          customFunc={() => handleClick( 'cart')} 
           color="blue" 
           icon={<FiShoppingCart/>}
         />
         <NavButton 
           title= "Chat"
           dotColor="#03c9d7"
-          customFunc={() => handleClick( 'Chat')} 
+          customFunc={() => handleClick( 'chat')} 
           color="blue" 
           icon={<BsChatLeft/>}
         />
         <NavButton 
           title= "Notifications"
           dotColor="#03c9d7"
-          customFunc={() => handleClick( 'notifications')} 
+          customFunc={() => handleClick( 'notification')} 
           color="blue" 
           icon={<RiNotification3Line/>}
         />
@@ -69,6 +85,11 @@ const {activeMenu, setActiveMenu, handleClick} = useStateContext();
             className="text-gray-400 font-bold ml-1 text-14" />
           </div>
         </TooltipComponent>
+
+        {isClicked.cart && <Cart />}
+        {isClicked.chat && <Chat />}
+        {isClicked.notification && <Notification />}
+        {isClicked.userProfile && <UserProfile />}
       </div>
     </div>
   )
